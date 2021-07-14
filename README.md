@@ -1,2 +1,2 @@
-## Build asterisk16 On Centos 7 With Script.
-Run ```scripts-ast16.sh``` for build asterisk 16.
+## Build Asterisk16 On Centos 7 With Script.
+Only run ```scripts-ast16.sh``` for build asterisk 16.
