@@ -2,7 +2,7 @@
 ###############################################################################
 #Script Name    : script asterisk 16                       
 #Description    : Building asterisk system on Centos7              
-#Author         : Mr.Kien    
+#Author         : Mr.Kien Le    
 ################################################################################
 
 eval `date "+day=%d; month=%m; year=%Y"`
