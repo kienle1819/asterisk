@@ -1,6 +1,6 @@
 #!/bin/bash
 ###############################################################################
-#Script Name    : script asterisk 18                       
+#Script Name    : script asterisk 16                       
 #Description    : Building asterisk system on Centos7              
 #Author         : Mr.Kien    
 ################################################################################
@@ -8,6 +8,8 @@
 eval `date "+day=%d; month=%m; year=%Y"`
 INSTFIL="$year-$month-$day"
 IPTABLES=/sbin/iptables
+IPTABLES_SAVE=/sbin/iptables-save
+
 # Disabling SeLinux for installation(Remains disabled untill reboot ar manual enable). 
 setenforce 0
 sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
@@ -133,7 +135,7 @@ chown -R asterisk. /var/www/
 echo -e "\e[32m asterisk Install OK!\e[m"
 
 # Alow porrt access asterisk and drop scan asterisk amonymous
-$IPTABLES > /usr/local/etc/iptables.last-$INSTFIL.log
+$IPTABLES_SAVE > /usr/local/etc/iptables.last-$INSTFIL.log
 $IPTABLES -P INPUT ACCEPT
 $IPTABLES -X
 $IPTABLES -Z
