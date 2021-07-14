@@ -1,7 +1,7 @@
 #!/bin/bash
 ###############################################################################
 #Script Name    : script asterisk 18                       
-#Description    : Building  pbx System               
+#Description    : Building asterisk system on Centos7              
 #Author         : Mr.Kien    
 ################################################################################
 # Disabling SeLinux for installation(Remains disabled untill reboot ar manual enable). 
@@ -31,21 +31,6 @@ yum -y groupinstall core base "Development Tools"
 
 #Installing additional required dependencies
 yum -y install automake gcc gcc-c++ ncurses-devel openssl-devel libxml2-devel unixODBC-devel libcurl-devel libogg-devel libvorbis-devel speex-devel spandsp-devel freetds-devel net-snmp-devel iksemel-devel corosynclib-devel newt-devel popt-devel libtool-ltdl-devel lua-devel sqlite-devel radiusclient-ng-devel portaudio-devel neon-devel libical-devel openldap-devel gmime-devel mysql-devel bluez-libs-devel jack-audio-connection-kit-devel gsm-devel libedit-devel libuuid-devel jansson-devel libsrtp-devel git subversion libxslt-devel kernel-devel audiofile-devel gtk2-devel libtiff-devel libtermcap-devel ilbc-devel bison php php-mysql php-process php-pear php-mbstring php-xml php-gd tftp-server httpd sox tzdata mysql-connector-odbc mariadb mariadb-server fail2ban jwhois xmlstarlet ghostscript libtiff-tools python-devel patch
-
-#Installing php 5.6 repositories
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-
-# Install php5.6w
-yum remove php*
-yum  install -y php56w php56w-pdo php56w-mysql php56w-mbstring php56w-pear php56w-process php56w-xml php56w-opcache php56w-ldap php56w-intl php56w-soap
-
-# Enabling and starting MariaDB
-systemctl enable mariadb.service
-systemctl start mariadb
-
-# MariaDB post install configuration
-#mysql_secure_installation
 
 echo -en "\e[2;32m                 Now you need reboot to take effect (y/n):\e[0m"
    read value
