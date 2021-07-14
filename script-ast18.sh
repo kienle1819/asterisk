@@ -32,6 +32,23 @@ yum -y groupinstall core base "Development Tools"
 #Installing additional required dependencies
 yum -y install automake gcc gcc-c++ ncurses-devel openssl-devel libxml2-devel unixODBC-devel libcurl-devel libogg-devel libvorbis-devel speex-devel spandsp-devel freetds-devel net-snmp-devel iksemel-devel corosynclib-devel newt-devel popt-devel libtool-ltdl-devel lua-devel sqlite-devel radiusclient-ng-devel portaudio-devel neon-devel libical-devel openldap-devel gmime-devel mysql-devel bluez-libs-devel jack-audio-connection-kit-devel gsm-devel libedit-devel libuuid-devel jansson-devel libsrtp-devel git subversion libxslt-devel kernel-devel audiofile-devel gtk2-devel libtiff-devel libtermcap-devel ilbc-devel bison php php-mysql php-process php-pear php-mbstring php-xml php-gd tftp-server httpd sox tzdata mysql-connector-odbc mariadb mariadb-server fail2ban jwhois xmlstarlet ghostscript libtiff-tools python-devel patch
 
+#Installing php 5.6 repositories
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum remove php*
+yum -y install php56w php56w-pdo php56w-mysql php56w-mbstring php56w-pear php56w-process php56w-xml php56w-opcache php56w-ldap php56w-intl php56w-soap
+
+# Enabling and starting MariaDB
+systemctl enable mariadb.service
+systemctl start mariadb
+
+# Install Iptables
+systemctl stop firewalld
+systemctl disable firewalld
+yum -y install iptables-services
+systemctl start iptables
+systemctl enable iptables
+
 echo -en "\e[2;32m                 Now you need reboot to take effect (y/n):\e[0m"
    read value
    echo ""
@@ -93,7 +110,7 @@ tar xvfz asterisk-18-current.tar.gz
 rm -f asterisk-18-current.tar.gz
 cd asterisk-*
 contrib/scripts/install_prereq install
-./configure --libdir=/usr/lib64 --with-pjproject-bundled
+./configure --libdir=/usr/lib64
 contrib/scripts/get_mp3_source.sh
 
 # Making some configuration of installation options, modules, etc. After selecting 'Save & Exit' you can then continue
@@ -116,11 +133,18 @@ chown -R asterisk. /usr/lib64/asterisk
 chown -R asterisk. /var/www/
 echo -e "\e[32m asterisk Install OK!\e[m"
 
-# Alow porrt access asterisk
-firewall-cmd --permanent --zone=public --add-port=5060-5061/tcp
-firewall-cmd --permanent --zone=public --add-port=5060-5061/udp
-firewall-cmd --permanent --zone=public --add-port=10000-20000/udp
-firewall-cmd --reload
+# Alow porrt access asterisk and drop scan asterisk amonymous
+iptables -A INPUT -p udp -m udp --dport 5060 -j ACCEPT
+iptables -A INPUT -p udp -m udp --dport 10000:20000 -j ACCEPT
+iptables -A INPUT -p udp -m udp --dport 5060 -m string --string "sipvicious" --algo bm --to 65535 -j DROP
+iptables -A INPUT -p udp -m udp --dport 5060 -m string --string "sipsak" --algo bm --to 65535 -j DROP
+iptables -A INPUT -p udp -m udp --dport 5060 -m string --string "iWar" --algo bm --to 65535 -j DROP
+iptables -A INPUT -p udp -m udp --dport 5060 -m string --string "sundayddr" --algo bm --to 65535 -j DROP
+iptables -A INPUT -p udp -m udp --dport 5060 -m string --string "sip-scan" --algo bm --to 65535 -j DROP
+iptables -A INPUT -p udp -m udp --dport 5060 -m string --string "friendly-scanner" --algo bm --to 65535 -j DROP
+iptables -A INPUT -p udp -j DROP
+iptables -A INPUT -p tcp -j DROP
+service iptables save
 }
 
 menu 
