@@ -1,2 +1,2 @@
-## asterisk18
-Run **scripts-ast18.sh** for build asterisk 18.
+## Build asterisk16 On Centos7 With Script
+Run ```scripts-ast16.sh``` for build asterisk 16.
