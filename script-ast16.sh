@@ -132,6 +132,8 @@ chown -R asterisk. /etc/asterisk
 chown -R asterisk. /var/{lib,log,spool}/asterisk
 chown -R asterisk. /usr/lib64/asterisk
 chown -R asterisk. /var/www/
+sed -i 's|;runuser|runuser|' /etc/asterisk/asterisk.conf
+sed -i 's|;rungroup|rungroup|' /etc/asterisk/asterisk.conf
 echo -e "\e[32m asterisk Install OK!\e[m"
 
 # Alow porrt access asterisk and drop scan asterisk amonymous
