@@ -1,3 +1,10 @@
+#!/bin/bash
+###############################################################################
+#Script Name    : script asterisk 20                       
+#Description    : Scripts cài đặt asterisk trên Ubuntu & Debian              
+#Author         : Mr.Kien Le    
+################################################################################
+
 #Update system & reboot
 sudo apt update && sudo apt -y upgrade
 sudo reboot
